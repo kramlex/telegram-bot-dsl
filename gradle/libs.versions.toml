@@ -1,0 +1,44 @@
+[versions]
+
+kotlinVersion = "1.6.21"
+
+ktorVersion = "2.0.0"
+logbackVersion = "1.2.3"
+telegramVersion = "6.0"
+telegramBotVersion = "6.0.7"
+tgBotApiVersion = "2.0.1"
+
+# kotlinx
+kotlinxSerializationVersion = "1.2.2"
+coroutinesVersion = "1.6.1"
+sqlDelightVersion = "2.0.0-alpha02"
+[libraries]
+
+#telegram
+telegramClient = { module = "com.github.omarmiatello.telegram:client", version.ref = "telegramVersion" }
+telegramDataclass = { module = "com.github.omarmiatello.telegram:dataclass", version.ref = "telegramVersion" }
+telegramDataclassOnly = { module = "com.github.omarmiatello.telegram:dataclass-only", version.ref = "telegramVersion" }
+telegramBot = { module = "io.github.kotlin-telegram-bot.kotlin-telegram-bot:telegram", version.ref = "telegramBotVersion" }
+tgBotApi = { module = "dev.inmo:tgbotapi", version.ref = "tgBotApiVersion" }
+
+sqlDelightGradle = { module = "app.cash.sqldelight:gradle-plugin", version.ref = "sqlDelightVersion" }
+sqlDelightCoroutines = { module = "app.cash.sqldelight:coroutines-extensions", version.ref = "sqlDelightVersion" }
+sqlDelightDriver = { module = "app.cash.sqldelight:sqlite-driver", version.ref = "sqlDelightVersion" }
+
+kotlinSerialization = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinxSerializationVersion" }
+coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutinesVersion" }
+
+ktorServerCoreJvm = { module = "io.ktor:ktor-server-core-jvm", version.ref = "ktorVersion" }
+ktorServerNettyJvm = { module = "io.ktor:ktor-server-netty-jvm", version.ref = "ktorVersion" }
+logback = { module = "ch.qos.logback:logback-classic", version.ref = "logbackVersion" }
+ktorServerTestJvm = { module = "io.ktor:ktor-server-tests-jvm", version.ref = "ktorVersion" }
+kotlinJunit = { module = "org.jetbrains.kotlin:kotlin-test-junit", version.ref = "kotlinVersion" }
+
+# gradle
+kotlinSerializationGradle = { module = "org.jetbrains.kotlin:kotlin-serialization", version.ref = "kotlinVersion" }
+kotlinGradlePlugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlinVersion" }
+
+
+
+
+

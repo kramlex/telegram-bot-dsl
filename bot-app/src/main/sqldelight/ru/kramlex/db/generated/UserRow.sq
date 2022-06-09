@@ -1,0 +1,45 @@
+import ru.kramlex.telegramdsl.bot.states.data.UserState;
+
+CREATE TABLE UserRow(
+    id INTEGER NOT NULL PRIMARY KEY,
+    fullName TEXT NOT NULL,
+    nickName TEXT,
+    organization TEXT,
+    state TEXT AS UserState NOT NULL
+);
+
+upsert {
+    UPDATE UserRow
+    SET fullName = :fullName, state = :state
+    WHERE id = :id;
+
+    INSERT OR IGNORE INTO UserRow (id, fullName, state)
+    VALUES(:id, :fullName, :state);
+}
+
+updateOrganization:
+UPDATE UserRow
+SET organization = :organization
+WHERE id = :id;
+
+updateNickname:
+UPDATE UserRow
+SET nickName = :nickName
+WHERE id = :id;
+
+updateUserState:
+UPDATE UserRow
+SET state = :state
+WHERE id = :id;
+
+getAllUsers:
+SELECT *
+FROM UserRow;
+
+getUserById:
+SELECT *
+FROM UserRow
+WHERE id = :id;
+
+dropTable:
+DELETE FROM UserRow;
