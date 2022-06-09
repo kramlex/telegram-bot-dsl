@@ -1,4 +1,4 @@
-# Kotlin Dsl Telegram Bot
+# Telegram Bot with Kotlin DSL 
 
 ## Description
 
