@@ -163,15 +163,15 @@ To work with this manager, we will create several handlers for BehaviorContext:
 ### Command Handler
 
 ```kotlin
-suspend fun BehaviourContext.handleCommand(userRepository: UserRepository) {
+suspend fun BehaviourContext.handleCommand(database: Database) {
     onCommand("start") { message ->
         println("[START] message: $message")
         val chatId = message.chatId
-        val existUser = userRepository.getUser(chatId.chatId)
+        val existUser = database.getUser(chatId.chatId)
         if (existUser == null) {
             val user = message.asFromUser()?.user
                 ?: throw java.lang.IllegalStateException("failed to get user information")
-            userRepository.saveUser(user)
+            database.saveUser(user)
         } else {
             val name = existUser.nickName ?: existUser.fullName
             sendMessage(
@@ -182,7 +182,7 @@ suspend fun BehaviourContext.handleCommand(userRepository: UserRepository) {
     }
     onCommand("drop") { message ->
         println("[DROP] message: $message")
-        userRepository.dropData()
+        database.dropData()
     }
 }
 ```
@@ -295,7 +295,7 @@ suspend fun start() {
 
         println(getMe())
 
-        userRepository.changes.receiveAsFlow()
+        database.changesFlow
             .onEach { handleState(it, botManager) }
             .launchIn(scope)
 
