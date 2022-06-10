@@ -3,9 +3,9 @@ package ru.kramlex.telegramdsl.bot.dsl
 import ru.kramlex.telegramdsl.bot.dsl.actions.*
 
 
-sealed class Values<out E: ActionExecutor<State, SaveType>> {
+sealed class Values<out E : ActionExecutor<State, SaveType>> {
 
-    data class Any<out E: ActionExecutor<State, SaveType>>(
+    data class Any<out E : ActionExecutor<State, SaveType>>(
         val actions: List<Action>
     ) : Values<E>() {
         @StateDslMarker
@@ -16,7 +16,7 @@ sealed class Values<out E: ActionExecutor<State, SaveType>> {
                 this(LineListBuilder<Action, E>(executor).apply(lambda).build())
     }
 
-    data class Many<out E: ActionExecutor<State, SaveType>>(
+    data class Many<out E : ActionExecutor<State, SaveType>>(
         val map: Map<String, List<Action>>,
         val errorAction: Action.SendMessage
     ) : Values<E>() {
@@ -35,7 +35,7 @@ sealed class Values<out E: ActionExecutor<State, SaveType>> {
         }
     }
 
-    data class Regex<out E: ActionExecutor<State, SaveType>>(
+    data class Regex<out E : ActionExecutor<State, SaveType>>(
         val regex: String,
         val actions: List<Action>,
         val errorAction: Action.SendMessage
@@ -53,7 +53,7 @@ sealed class Values<out E: ActionExecutor<State, SaveType>> {
         )
     }
 
-    data class Constant<out E: ActionExecutor<State, SaveType>>(
+    data class Constant<out E : ActionExecutor<State, SaveType>>(
         val string: String,
         val actions: List<Action>,
         val errorAction: Action.SendMessage
@@ -93,7 +93,7 @@ sealed class Values<out E: ActionExecutor<State, SaveType>> {
 }
 
 @StateDslMarker
-class MapListBuilder<out T: Action, out E: ActionExecutor<State, SaveType>>(
+class MapListBuilder<out T : Action, out E : ActionExecutor<State, SaveType>>(
     private val executor: E
 ) {
     private val actionsMap: MutableMap<String, List<T>> = mutableMapOf()
@@ -107,7 +107,7 @@ class MapListBuilder<out T: Action, out E: ActionExecutor<State, SaveType>>(
 
 
 @StateDslMarker
-class LineListBuilder<out T: Any, out E: ActionExecutor<State, SaveType>>(
+class LineListBuilder<out T : Any, out E : ActionExecutor<State, SaveType>>(
     private val executor: E
 ) {
     private val mutableList: MutableList<T> = mutableListOf()
@@ -118,8 +118,31 @@ class LineListBuilder<out T: Any, out E: ActionExecutor<State, SaveType>>(
     }
 
     @StateDslMarker
-    fun addActions(lambda: MultipleLineListBuilder<T, E>.() -> Unit) {
-        mutableList.addAll(MultipleLineListBuilder<T, E>(executor).apply(lambda).build())
+    fun addActions(lambda: E.() -> List<@UnsafeVariance T>) {
+        mutableList.addAll(lambda.invoke(executor))
+    }
+
+    @StateDslMarker
+    fun actionsBuilder(lambda: MultipleLineListBuilder<T, E>.() -> Unit) {
+        mutableList.addAll(
+            MultipleLineListBuilder<T, E>(executor)
+                .apply(lambda)
+                .build()
+        )
+    }
+
+    fun build(): List<T> = mutableList.toList()
+}
+
+@StateDslMarker
+class MultipleLineListBuilder<out T : Any, out E : ActionExecutor<State, SaveType>>(
+    private val executor: E
+) {
+    private val mutableList: MutableList<@UnsafeVariance T> = mutableListOf()
+
+    @StateDslMarker
+    fun addAction(lambda: E.() -> @UnsafeVariance T) {
+        mutableList.add(executor.lambda())
     }
 
     fun build(): List<T> = mutableList.toList()

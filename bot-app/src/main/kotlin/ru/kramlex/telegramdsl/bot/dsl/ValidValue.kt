@@ -32,9 +32,8 @@ sealed interface ValidValue {
         }
     }
 
-    class InvalidValue(val errorMessage: String): Throwable(errorMessage)
+    class InvalidValue(val errorMessage: String) : Throwable(errorMessage)
 }
-
 
 
 class InvalidErrorContext(

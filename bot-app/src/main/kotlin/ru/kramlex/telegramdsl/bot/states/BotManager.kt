@@ -30,8 +30,10 @@ class BotManager(
             addState(StartedState.HelloMessage) {
                 startActions {
                     addActions {
-                        sendTextMessage(StartedState.HelloMessage.message)
-                        routeToState(StartedState.EnterOrganization)
+                        listOf(
+                            sendTextMessage(StartedState.HelloMessage.message),
+                            routeToState(StartedState.EnterOrganization)
+                        )
                     }
                 }
             }
@@ -53,17 +55,15 @@ class BotManager(
                     addAction { sendTextMessage(StartedState.EnterName.message) }
                 }
                 anyValues {
-                    addActions {
-                        saveAction(SaveName)
-                        routeToState(Final)
-                    }
+                    addAction { saveAction(SaveName) }
+                    addAction { routeToState(Final) }
                 }
             }
 
             // Final
             addState(Final) {
                 startActions {
-                    addAction { helloMessage() } // adition action
+                    addAction { helloMessage() }
                     addAction { sendTextMessage(Final.message) }
                 }
             }

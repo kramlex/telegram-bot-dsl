@@ -5,7 +5,7 @@ import ru.kramlex.telegramdsl.bot.dsl.actions.SaveType
 import ru.kramlex.telegramdsl.bot.dsl.actions.State
 import kotlin.reflect.KClass
 
-class StateManager<out T : Any, out E: ActionExecutor<State, SaveType>>(
+class StateManager<out T : Any, out E : ActionExecutor<State, SaveType>>(
     private val actionExecutor: E
 ) {
     private val _stateMap: MutableMap<KClass<out T>, StateInfo<E>> = mutableMapOf()
@@ -15,16 +15,16 @@ class StateManager<out T : Any, out E: ActionExecutor<State, SaveType>>(
     }
 
     @StateDslMarker
-    fun states(lambda: Builder<T,E>.(ActionExecutor<State, SaveType>) -> Unit) {
+    fun states(lambda: Builder<T, E>.(ActionExecutor<State, SaveType>) -> Unit) {
         _stateMap.plusAssign(
-            Builder<T,E>(actionExecutor)
+            Builder<T, E>(actionExecutor)
                 .apply { lambda(actionExecutor) }
                 .build()
         )
     }
 
     @StateDslMarker
-    class Builder<out T: Any, out E: ActionExecutor<State, SaveType>>(
+    class Builder<out T : Any, out E : ActionExecutor<State, SaveType>>(
         private val executor: E
     ) {
         private val mutableMap: MutableMap<KClass<out T>, StateInfo<E>> = mutableMapOf()

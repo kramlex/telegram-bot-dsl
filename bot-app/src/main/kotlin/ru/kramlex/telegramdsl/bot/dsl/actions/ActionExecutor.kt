@@ -5,20 +5,20 @@ import dev.inmo.tgbotapi.extensions.behaviour_builder.BehaviourContext
 import dev.inmo.tgbotapi.types.ChatId
 import dev.inmo.tgbotapi.types.message.abstracts.CommonMessage
 
-abstract class ActionExecutor<out TypeState: State, out TypeSave: SaveType> {
+abstract class ActionExecutor<out TypeState : State, out TypeSave : SaveType> {
 
-    sealed interface ActionType: Action
-    sealed interface WithoutMessage: Action
+    sealed interface ActionType : Action
+    sealed interface WithoutMessage : Action
 
-    interface ExecutableWithMessage: Action {
+    interface ExecutableWithMessage : Action {
         fun execute(message: CommonMessage<*>)
     }
 
-    interface ExecutableWithContext: WithoutMessage, Action {
+    interface ExecutableWithContext : WithoutMessage, Action {
         suspend fun executeWithContext(context: BehaviourContext, chatId: ChatId)
     }
 
-    interface Executable: WithoutMessage {
+    interface Executable : WithoutMessage {
         fun execute(id: Long)
     }
 

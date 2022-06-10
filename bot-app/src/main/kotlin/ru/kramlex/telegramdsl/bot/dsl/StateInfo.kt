@@ -5,14 +5,14 @@ import ru.kramlex.telegramdsl.bot.dsl.actions.ActionExecutor
 import ru.kramlex.telegramdsl.bot.dsl.actions.SaveType
 import ru.kramlex.telegramdsl.bot.dsl.actions.State
 
-data class StateInfo<out E: ActionExecutor<State, SaveType>>(
+data class StateInfo<out E : ActionExecutor<State, SaveType>>(
     val enterStateActions: List<ActionExecutor.WithoutMessage> = emptyList(),
     val menu: String? = null,
     val values: Values<E>? = null
 ) {
 
     @StateDslMarker
-    class Builder<out E: ActionExecutor<State, SaveType>>(
+    class Builder<out E : ActionExecutor<State, SaveType>>(
         private val executor: E
     ) {
         private var enterStateActions: List<ActionExecutor.WithoutMessage> = emptyList()
